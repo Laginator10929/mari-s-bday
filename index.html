@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    overflow:hidden;
+    background:linear-gradient(135deg,#ff4e8b,#ff7eb3,#ffd6e8);
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    position:relative;
+    z-index:10;
+    text-align:center;
+    color:white;
+    padding:25px;
+    width:90%;
+    max-width:600px;
+}
+
+h1{
+    font-size:3rem;
+    text-shadow:0 0 20px rgba(255,255,255,.7);
+    animation:glow 2s infinite alternate;
+}
+
+h2{
+    margin-top:10px;
+    font-size:1.8rem;
+}
+
+p{
+    margin-top:20px;
+    font-size:1.1rem;
+    line-height:1.7;
+}
+
+.cake{
+    font-size:90px;
+    animation:bounce 1.3s infinite;
+}
+
+button{
+    margin-top:30px;
+    border:none;
+    padding:15px 35px;
+    border-radius:50px;
+    font-size:18px;
+    background:white;
+    color:#ff3d7f;
+    cursor:pointer;
+    font-weight:bold;
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.1);
+}
+
+@keyframes bounce{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-15px);}
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px white;}
+    to{text-shadow:0 0 35px white;}
+}
+
+/* Balloons */
+
+.balloon{
+position:absolute;
+bottom:-150px;
+width:60px;
+height:80px;
+border-radius:50%;
+animation:float linear infinite;
+opacity:.85;
+}
+
+.balloon::after{
+content:"";
+position:absolute;
+width:2px;
+height:70px;
+background:white;
+left:50%;
+top:80px;
+}
+
+.red{background:#ff4d6d;}
+.blue{background:#4da6ff;}
+.yellow{background:#ffd93d;}
+.green{background:#7cff6b;}
+.purple{background:#c77dff;}
+
+@keyframes float{
+0%{
+transform:translateY(0);
+}
+100%{
+transform:translateY(-120vh);
+}
+}
+
+canvas{
+position:fixed;
+left:0;
+top:0;
+pointer-events:none;
+}
+
+@media(max-width:600px){
+
+h1{
+font-size:2.2rem;
+}
+
+h2{
+font-size:1.3rem;
+}
+
+p{
+font-size:1rem;
+}
+
+.cake{
+font-size:70px;
+}
+
+button{
+width:100%;
+}
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="container">
+
+<div class="cake">🎂</div>
+
+<h1>Happy Birthday!</h1>
+
+<h2>🎉 Wishing You a Day Full of Happiness! 🎉</h2>
+
+<p>
+happy birthday mari MY UNGRATEFUL MANGO LOVER HG who is a big meanie bas at the same time a diva , still a bitch tho ngl hehe. ENJOY UR BDAY AND IM THE FIRST ONE WHO TOLD U HAPPY BIRTHDAY NOT MEKA. ❤️
+</p>
+
+<button onclick="startCelebration()">🎁 Celebrate!</button>
+
+<audio id="music" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+</div>
+
+<div class="balloon red" style="left:5%;animation-duration:9s;"></div>
+<div class="balloon blue" style="left:20%;animation-duration:11s;"></div>
+<div class="balloon yellow" style="left:38%;animation-duration:8s;"></div>
+<div class="balloon green" style="left:60%;animation-duration:10s;"></div>
+<div class="balloon purple" style="left:82%;animation-duration:12s;"></div>
+
+<script>
+// Music
+
+function startCelebration(){
+    document.getElementById("music").play();
+}
+
+// Confetti
+
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+const pieces=[];
+
+for(let i=0;i<250;i++){
+pieces.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*6+2,
+d:Math.random()*250,
+color:`hsl(${Math.random()*360},100%,60%)`,
+tilt:Math.random()*10-10
+});
+}
+
+function draw(){
+
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+pieces.forEach(p=>{
+
+ctx.beginPath();
+ctx.lineWidth=p.r;
+ctx.strokeStyle=p.color;
+
+ctx.moveTo(p.x+p.tilt,p.y);
+ctx.lineTo(p.x,p.y+p.tilt);
+
+ctx.stroke();
+
+});
+
+update();
+
+requestAnimationFrame(draw);
+}
+
+let angle=0;
+
+function update(){
+
+angle+=0.01;
+
+pieces.forEach((p,i)=>{
+
+p.y+=Math.cos(angle+p.d)+2+p.r/2;
+p.x+=Math.sin(angle);
+
+if(p.y>canvas.height){
+
+pieces[i]={
+x:Math.random()*canvas.width,
+y:-20,
+r:p.r,
+d:p.d,
+color:p.color,
+tilt:p.tilt
+};
+
+}
+
+});
+
+}
+
+draw();
+
+window.onresize=()=>{
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+}
+</script>
+
+</body>
+</html>
